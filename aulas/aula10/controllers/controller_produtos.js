@@ -1,6 +1,6 @@
 const Produto = require('../models/model_produtos');
 
-async function validarDados(res, req, next){
+async function validarDados(req, res, next){
     const produto = new Produto(req.body);
     try {
         await produto.validate();

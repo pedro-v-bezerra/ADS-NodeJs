@@ -5,4 +5,26 @@ info:
 tags:
   - produtos
 paths:
+  /produtos:
+    post:
+      tags:
+        - produtos
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Produto'
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Produto'
+        422:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mensagem'
 components:
+  schemas:
+    

@@ -13,4 +13,12 @@ describe('API Loja Virtual', () => {
     //     expect(response.type).toBe('application/json')
     //     id = response.body._id
     // })
+
+    test("Deve retornar 422 e JSON no POST /produtos", async() => {
+        const response = await request.post("/produtos").send({});
+        expect(response.status).toBe(422);
+        expect(response.type).toBe("application/json");
+    });
+
+    
 })
