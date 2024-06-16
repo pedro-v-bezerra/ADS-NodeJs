@@ -1,45 +1,59 @@
-const mongoose = require('mongoose')
+
+const mongoose = require('mongoose');
 const Produto = require('../models/model_produtos');
 
-async function validarDados(req, res, next){
+const validarDados = async (req, res, next) => {
     const produto = new Produto(req.body);
     try {
         await produto.validate();
-        next()
-    } catch (error) {
-        res.status(422).json({msg: "Dados do produto inválido"})
-    }
-}
+        next();
+    } catch (err) {
+        res.status(422).json({ msg: 'Dados do produto invalidos' });
+    };
 
-async function criar(req, res) {
-    const produto = await Produto.create(req.body)
+};
+
+const criar = async (req, res) => {
+    const produto = await Produto.create(req.body);
     res.status(201).json(produto);
-}
+};
 
-async function obterTodos(req,res) {
+const obterTodos = async (req, res) => {
     const produtos = await Produto.find({});
     res.json(produtos);
-}
+};
 
-async function buscarPeloId  (req,res, next) {
-    try{
-        const id = new mongoose.Types.ObjectId(req.params.id);
+const buscarPeloId = async (req, res, next) => {
+    try {
+        const id = new mongoose.Types.ObjectId(req.params.id)
         const produto = await Produto.findOne({ _id: id });
         if (produto) {
             next();
-        } else { 
-            res.status(404).json({msg: "Produto não encontrado"})
-        };
-    }catch(err){
-        res.status(400).json({msg: "Id Inválido"})
+        } else {
+            res.status(404).json({ msg: 'Produto não encontrado!' })
+        }
+    } catch (error) {
+        res.status(400).json({ msg: 'id inválido!' });
     }
+
 }
 
-
-async function obter(req, res) {
+const obter = async (req, res) => {
     const id = new mongoose.Types.ObjectId(req.params.id);
-    const produto = await Produto.findOne({ _id: id })
+    const produto = await Produto.findOne({ _id: id });
     res.json(produto);
-}
+};
 
-module.exports = {validarDados, criar, obterTodos, obter, buscarPeloId}
+const atualizar = async (req, res) => {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const produto = await Produto.findByIdAndUpdate({_id: id}, req.body);
+    res.json(produto);
+};
+
+const remover = async (req,res) => {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    await Produto.findByIdAndDelete({_id: id});
+    res.status(204).end();
+};
+
+module.exports = { validarDados, criar, obterTodos, obter, buscarPeloId, atualizar, remover };

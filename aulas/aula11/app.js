@@ -4,19 +4,18 @@ var express = require('express');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const routerApiDocs = require('./routes/router_apidocs');
-const routerProdutos = require('./routes/router_produtos');
 
-var app = express();
+var usersRouter = require('./routes/users');
 
 mongoose.connect(process.env.MONGODB_URL);
+
+var app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api-docs', routerApiDocs);
-app.use('/produtos', routerProdutos);
+app.use('/users', usersRouter);
 
 module.exports = app;

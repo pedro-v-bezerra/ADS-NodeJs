@@ -1,16 +1,20 @@
-const express = require('express')
+const express = require('express');
 
-const controllerProdutos = require('../controllers/controller_produtos')
- 
-const router = express.Router();
+const controllerProdutos = require('../controllers/controller_produtos');
 
-router.post ('/', controllerProdutos.validarDados, controllerProdutos.criar);
+const validarToken = require('../middlewares/auth');
 
-router.get("/", controllerProdutos.obterTodos )
+const router = express.Router()
 
-router.get("/:id",
-  controllerProdutos.buscarPeloId,
-  controllerProdutos.obter
-)
+router.post('/', controllerProdutos.validarDados, controllerProdutos.criar);
+
+router.get('/', validarToken ,controllerProdutos.obterTodos);
+
+router.get('/:id', controllerProdutos.buscarPeloId, controllerProdutos.obter);
+
+router.put('/:id', controllerProdutos.buscarPeloId, controllerProdutos.validarDados, controllerProdutos.atualizar);
+
+router.delete('/:id', controllerProdutos.buscarPeloId, controllerProdutos.remover)
+
 
 module.exports = router;
